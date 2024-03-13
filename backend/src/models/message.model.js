@@ -12,10 +12,13 @@ const messageSchema = new Schema(
             ref: "User",
             required: true,
         },
+        message: {
+            type: String,
+            required: true,
+            trim: true,
+        },
     },
     { timestamps: true }
 );
 
-const Message = mongoose.model("Message", messageSchema);
-
-export default Message;
+export const Message = mongoose.model("Message", messageSchema);
