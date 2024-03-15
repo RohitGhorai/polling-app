@@ -1,5 +1,4 @@
-import Base from './Base.jsx';
+import GenderCheckbox from "./GenderCheckbox";
+import Input from "./Input";
 
-export {
-    Base
-}
+export { GenderCheckbox, Input };

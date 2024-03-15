@@ -2,7 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
-*{
-  margin: 0;
-  scroll-behavior: smooth;
+* {
+    margin: 0;
+    scroll-behavior: smooth;
+}
+
+@media (prefers-color-scheme: dark){
+  input:-internal-autofill-selected {
+    appearance: menulist-button;
+    background-image: none !important;
+    background-color: -internal-light-dark(
+        rgb(232, 240, 254),
+        rgba(70, 90, 126, 0.4)
+    ) !important;
+    color: fieldtext !important;
+    -webkit-text-fill-color: white;
+    caret-color: white;
+}
 }
