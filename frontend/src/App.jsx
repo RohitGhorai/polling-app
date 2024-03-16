@@ -3,13 +3,15 @@ import { Login } from "./pages";
 import SignUp from "./pages/SignUp";
 import { Toaster } from "react-hot-toast";
 import { useAuthContext } from "./context/AuthContext.jsx";
+import Home from "./pages/Home.jsx";
 
 function App() {
     const { authUser } = useAuthContext();
     return (
         <div className="dark:bg-gray-800">
             <Routes>
-                <Route path="/" Component={Login} />
+                <Route path="/" Component={Home} />
+                <Route path="/login" Component={Login} />
                 <Route path="/signup" Component={SignUp} />
             </Routes>
             <Toaster position="top-center" />

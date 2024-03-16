@@ -7,16 +7,62 @@
     scroll-behavior: smooth;
 }
 
-@media (prefers-color-scheme: dark){
-  input:-internal-autofill-selected {
-    appearance: menulist-button;
-    background-image: none !important;
-    background-color: -internal-light-dark(
-        rgb(232, 240, 254),
-        rgba(70, 90, 126, 0.4)
-    ) !important;
-    color: fieldtext !important;
-    -webkit-text-fill-color: white;
-    caret-color: white;
+@media (prefers-color-scheme: dark) {
+    input:-internal-autofill-selected {
+        appearance: menulist-button;
+        background-image: none !important;
+        background-color: -internal-light-dark(
+            rgb(232, 240, 254),
+            rgba(70, 90, 126, 0.4)
+        ) !important;
+        color: fieldtext !important;
+        -webkit-text-fill-color: white;
+        caret-color: white;
+    }
 }
+
+/* Width of the scrollbar */
+
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+/* Track (background) of the scrollbar */
+::-webkit-scrollbar-track {
+    background: #c0bdbd;
+}
+
+/* Handle (thumb) of the scrollbar */
+::-webkit-scrollbar-thumb {
+    background: #918d8d;
+    border-radius: 3px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #777575;
+    cursor: pointer;
+}
+
+@media (prefers-color-scheme: dark) {
+    ::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    /* Track (background) of the scrollbar */
+    ::-webkit-scrollbar-track {
+        background: #63626267;
+    }
+
+    /* Handle (thumb) of the scrollbar */
+    ::-webkit-scrollbar-thumb {
+        background: #918d8d;
+        border-radius: 3px;
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: #c0bdbd;
+        cursor: pointer;
+    }
 }
