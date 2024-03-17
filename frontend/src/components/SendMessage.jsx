@@ -2,7 +2,7 @@ import React from "react";
 
 const SendMessage = () => {
     return (
-        <form class="relative w-full p-2">
+        <form className="relative w-full p-2">
             <input
                 type="text"
                 id="search-dropdown"
@@ -12,7 +12,7 @@ const SendMessage = () => {
             />
             <button
                 type="submit"
-                class="absolute top-2 end-2 py-2 px-3 text-sm font-medium text-gray-600 hover:text-gray-700 dark:text-gray-400 hover:dark:text-gray-200 rounded-e-lg focus:ring-4 focus:outline-none focus:ring-blue-300"
+                className="absolute top-2 end-2 py-2 px-3 text-sm font-medium text-gray-600 hover:text-gray-700 dark:text-gray-400 hover:dark:text-gray-200 rounded-e-lg focus:ring-4 focus:outline-none focus:ring-blue-300"
             >
                 <svg
                     viewBox="0 0 24 24"

@@ -7,7 +7,6 @@ const Login = () => {
         username: "",
         password: "",
     });
-
     const { loading, login } = useLogin();
 
     const handleChange = (e, field) => {
@@ -17,7 +16,7 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        await login(user);
+        await login(user)
     };
 
     console.log(user);

@@ -10,9 +10,22 @@ function App() {
     return (
         <div className="dark:bg-gray-800">
             <Routes>
-                <Route path="/" Component={Home} />
-                <Route path="/login" Component={Login} />
-                <Route path="/signup" Component={SignUp} />
+                <Route
+                    path="/"
+                    element={authUser ? <Home /> : <Navigate to={"/login"} />}
+                />
+                <Route
+                    path="/login"
+                    element={authUser ? <Navigate to="/" /> : <Login />}
+                />
+                <Route
+                    path="/signup"
+                    element={authUser ? <Navigate to="/" /> : <SignUp />}
+                />
+                <Route
+                    path="/signup"
+                    element={authUser ? <Navigate to="/" /> : <SignUp />}
+                />
             </Routes>
             <Toaster position="top-center" />
         </div>

@@ -3,7 +3,7 @@ import React from "react";
 const SearchInput = () => {
     return (
         <form className="flex items-center justify-between w-[80%]">
-            <label for="simple-search" className="sr-only">
+            <label htmlFor="simple-search" className="sr-only">
                 Search
             </label>
             <input
