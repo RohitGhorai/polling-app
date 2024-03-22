@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Conversation from "./Conversation";
 import Sidebar from "../components/Sidebar";
 import SendMessage from "../components/SendMessage";
@@ -6,32 +6,38 @@ import Hamburger from "hamburger-react";
 import useGetMessages from "../hooks/useGetMessages";
 import { useAuthContext } from "../context/AuthContext";
 import { useSocketContext } from "../context/SocketContext";
+import MessageSkeleton from "../skeleton/MessageSkeleton";
+import useConversation from "../hooks/useConversation";
+import useListenMessages from "../hooks/useListenMessages";
 
-const ConversationContainer = ({
-    users,
-    loading,
-    selected,
-    setSelected,
-}) => {
+const ConversationContainer = ({ users, loading }) => {
     const [isOpen, setOpen] = useState(false);
     const { authUser } = useAuthContext();
-    const { messages, messagesLoading } = useGetMessages(selected);
+    // const [allMessage, aetAllMessage] = useState(messages);
+    const { selectedConversation } = useConversation();
     const { onlineUsers } = useSocketContext();
-    const isOnline = onlineUsers.includes(selected._id);
-    console.log(selected);
+    const isOnline = onlineUsers.includes(selectedConversation?._id);
+    const { messages, messagesLoading } = useGetMessages();
+    const isSelected = selectedConversation !== null;
+    // if (isSelected)
+    console.log(isSelected);
+    useListenMessages();
+    const lastMessageRef = useRef();
+
+    useEffect(() => {
+        setTimeout(() => {
+            lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
+        }, 100);
+    }, [messages]);
+
+    console.log(isOnline);
+
     return (
         <div className="md:border-e md:border-y md:border-l-1 border rounded-md md:rounded-s-none md:rounded-e-md flex flex-col h-full w-full md:w-3/4 overflow-hidden dark:text-gray-200">
             {isOpen && (
-                <Sidebar
-                    users={users}
-                    loading={loading}
-                    selected={selected}
-                    setSelected={setSelected}
-                    setOpen={setOpen}
-                    isOnline={isOnline}
-                />
+                <Sidebar users={users} loading={loading} setOpen={setOpen} />
             )}
-            {Object.keys(selected).length !== 0 ? (
+            {isSelected ? (
                 <>
                     <div className="flex w-fit z-10 flex-row gap-3 justify-start items-center p-2 fixed">
                         <button className={`md:hidden block`}>
@@ -42,7 +48,7 @@ const ConversationContainer = ({
                             />
                         </button>
                         <img
-                            src={`https://avatar.iran.liara.run/public/boy?${selected.username}`}
+                            src={`https://avatar.iran.liara.run/public/boy?${selectedConversation?.username}`}
                             className={`w-[40px] h-[40px] p-[0.04rem] border rounded-full ${
                                 isOpen && "hidden"
                             }`}
@@ -56,7 +62,7 @@ const ConversationContainer = ({
                             <span className="relative inline-flex rounded-full h-3 w-3 bg-sky-500"></span>
                         </span>
                         <span className={`${isOpen && "hidden"}`}>
-                            {selected.fullName}
+                            {selectedConversation?.fullName}
                         </span>
                     </div>
 
@@ -65,24 +71,27 @@ const ConversationContainer = ({
                             isOpen && "hidden"
                         }`}
                     >
-                        <div className="flex flex-col h-full overflow-y-auto">
-                            {messages?.map((message, index) => (
-                                <div
-                                    id={index}
-                                    key={index}
-                                    className={`flex ${
-                                        authUser.data._id === message.receiverId
-                                            ? "items-start"
-                                            : "items-end"
-                                    } p-2 flex-col w-full h-fit`}
-                                >
-                                    <Conversation
-                                        message={message}
-                                        selectedUser={selected}
-                                    />
-                                </div>
-                            ))}
-                        </div>
+                        {messagesLoading ? (
+                            <MessageSkeleton />
+                        ) : (
+                            <div className="flex flex-col h-full overflow-y-auto">
+                                {messages?.map((message, index) => (
+                                    <div
+                                        id={index}
+                                        key={index}
+                                        ref={lastMessageRef}
+                                        className={`flex ${
+                                            authUser.data?._id ===
+                                            message?.receiverId
+                                                ? "items-start"
+                                                : "items-end"
+                                        } p-1 flex-col w-full h-fit`}
+                                    >
+                                        <Conversation message={message} />
+                                    </div>
+                                ))}
+                            </div>
+                        )}
                     </div>
 
                     <div
@@ -90,7 +99,7 @@ const ConversationContainer = ({
                             isOpen && "hidden"
                         } flex flex-row bg-gray-300 dark:bg-gray-600 rounded-e-md rounded-t-none justify-between pe-1 items-center`}
                     >
-                        <SendMessage />
+                        <SendMessage selectedUser={selectedConversation} />
                         <button className="p-1 text-gray-600 hover:text-gray-700 dark:text-gray-400 hover:dark:text-gray-200">
                             <svg
                                 fill="currentColor"
@@ -115,14 +124,14 @@ const ConversationContainer = ({
                         </button>
                     </div>
                     <div
-                        className={`flex flex-col gap-3 justify-center ${
+                        className={`flex flex-col gap-3 justify-center h-full ${
                             isOpen && "hidden"
-                        } h-full items-center overflow-hidden dark:text-gray-200`}
+                        } items-center overflow-hidden dark:text-gray-200`}
                     >
                         <span className="text-3xl text-gray-600 dark:text-gray-300 font-medium">
                             Welcome 👋{" "}
                             <span className="text-blue-600">
-                                {authUser.data.fullName} ❄
+                                {authUser.data?.fullName} ❄
                             </span>
                         </span>
                         <p>Select a chat to start messaging</p>

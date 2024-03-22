@@ -1,18 +1,19 @@
 import { useAuthContext } from "../context/AuthContext";
 import { useSocketContext } from "../context/SocketContext";
+import useConversation from "../hooks/useConversation";
 
-const Conversation = ({ message, selectedUser }) => {
+const Conversation = ({ message }) => {
     const { authUser } = useAuthContext();
     const receiverId = authUser.data._id === message.receiverId;
-
-    const currDate = new Date();
-
+    const { selectedConversation } = useConversation;
+    
     const dateTimeString = message.createdAt;
     const dateTime = new Date(dateTimeString);
     const year = dateTime.getFullYear();
     const month = dateTime.getMonth() + 1; // Months are zero-based (0-11), so add 1
     const day = dateTime.getDate();
-
+    const currDate = new Date(dateTime.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }));
+    
     const hours = String(dateTime.getUTCHours()).padStart(2, "0");
     const minutes = String(dateTime.getUTCMinutes()).padStart(2, "0");
 
@@ -43,26 +44,14 @@ const Conversation = ({ message, selectedUser }) => {
         }
     };
 
-
-
     return (
         <>
-            {!(currDate.getDate() === day &&
-                currDate.getMonth() + 1 === month &&
-                currDate.getFullYear() === year &&
-                year) && (
-                <div className="flex justify-center mb-3 items-center w-full">
-                    <span className="px-3 py-[2px] rounded-3xl text-xs dark:text-gray-500 bg-gray-300 dark:bg-gray-900">
-                        {addSuffix(day)} {monthNames[month-1]}, {year}
-                    </span>
-                </div>
-            )}
             {message && (
                 <div className="flex items-end gap-2.5">
                     {receiverId && (
                         <img
                             className="lg:block hidden w-8 h-8 rounded-full"
-                            src={`https://avatar.iran.liara.run/public/boy?${selectedUser.username}`}
+                            src={`https://avatar.iran.liara.run/public/boy?${selectedConversation?.username}`}
                             alt="Jese image"
                         />
                     )}
@@ -93,6 +82,7 @@ const Conversation = ({ message, selectedUser }) => {
                             </span>
                         </div>
                     </div>
+
                     {!receiverId && (
                         <img
                             className="lg:block hidden w-8 h-8 rounded-full"
@@ -100,6 +90,7 @@ const Conversation = ({ message, selectedUser }) => {
                             alt="Jese image"
                         />
                     )}
+
                     {/* <button
                     id="dropdownMenuIconButton"
                     data-dropdown-toggle="dropdownDots"
@@ -167,6 +158,24 @@ const Conversation = ({ message, selectedUser }) => {
                         </li>
                     </ul>
                 </div> */}
+                </div>
+            )}
+            {!(
+                currDate.getDate() === day &&
+                currDate.getMonth() + 1 === month &&
+                currDate.getFullYear() === year &&
+                year
+            ) && (
+                <div
+                    className={`flex ${
+                        receiverId
+                            ? "justify-start ms-0 md:ms-10"
+                            : "justify-end me-0 md:me-10"
+                    } items-center w-fit `}
+                >
+                    <span className="p-1 text-xs dark:text-gray-500 ">
+                        {addSuffix(day)} {monthNames[month - 1]}, {year}
+                    </span>
                 </div>
             )}
         </>

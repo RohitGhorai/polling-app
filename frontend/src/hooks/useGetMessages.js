@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import useConversation from "./useConversation";
 
-const useGetMessages = (selectedConversation) => {
+const useGetMessages = () => {
     const [messagesLoading, setMessagesLoading] = useState(false);
-    const [messages, setMessages] = useState([]);
+    const { messages, setMessages, selectedConversation } = useConversation();
 
     useEffect(() => {
         const getMessages = async () => {

@@ -4,6 +4,7 @@ import SignUp from "./pages/SignUp";
 import { Toaster } from "react-hot-toast";
 import { useAuthContext } from "./context/AuthContext.jsx";
 import Home from "./pages/Home.jsx";
+import ConversationContainer from "./components/ConversationContainer.jsx";
 
 function App() {
     const { authUser } = useAuthContext();
@@ -23,7 +24,7 @@ function App() {
                     element={authUser ? <Navigate to="/" /> : <SignUp />}
                 />
                 <Route
-                    path="/signup"
+                    path="/container"
                     element={authUser ? <Navigate to="/" /> : <SignUp />}
                 />
             </Routes>
