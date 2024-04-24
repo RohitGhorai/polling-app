@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Input, GenderCheckbox } from "../components";
 import useSignup from "../hooks/useSignup";
+import toast from "react-hot-toast";
 
 const SignUp = () => {
     const [inputs, setInputs] = useState({
@@ -12,6 +13,7 @@ const SignUp = () => {
         confirmPassword: "",
         gender: "",
     });
+    const navigate = useNavigate();
     const { loading, signup } = useSignup();
 
     const handleCheckBoxChange = (gender) => {
@@ -29,6 +31,8 @@ const SignUp = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         await signup(inputs);
+        toast.success("User registered successfully..");
+        navigate("/login");
     };
     console.log(inputs);
     return (

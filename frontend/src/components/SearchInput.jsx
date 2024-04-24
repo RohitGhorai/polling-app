@@ -1,8 +1,36 @@
-import React from "react";
+import React, { useState } from "react";
+import useConversation from "../hooks/useConversation";
+import toast from "react-hot-toast";
+import useGetUsers from './../hooks/useGetUsers';
 
 const SearchInput = () => {
+    const [search, setSearch] = useState("");
+    const { setSelectedConversation } = useConversation();
+    const { users } = useGetUsers();
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (!search) return;
+        if (search.length < 3) {
+            return toast.error(
+                "Search term must be at least 3 characters long"
+            );
+        }
+
+        const conversation = users.find((c) =>
+            c.fullName?.toLowerCase().includes(search.toLowerCase())
+        );
+
+        if (conversation) {
+            setSelectedConversation(conversation);
+            setSearch("");
+        } else toast.error("No such user found!");
+    };
+    console.log(search);
     return (
-        <form className="flex items-center justify-between w-[80%]">
+        <form
+            onSubmit={handleSubmit}
+            className="flex items-center justify-between w-[80%]"
+        >
             <label htmlFor="simple-search" className="sr-only">
                 Search
             </label>
@@ -11,6 +39,8 @@ const SearchInput = () => {
                 id="simple-search"
                 className="bg-gray-50 border dark:autofill:shadow-[inset_0_0_0px_1000px_rgb(17,24,39,0.9)] border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-2.5 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Search branch name..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
             />
 
             <button

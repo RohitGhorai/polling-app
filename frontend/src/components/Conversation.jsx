@@ -14,8 +14,8 @@ const Conversation = ({ message }) => {
     const day = dateTime.getDate();
     const currDate = new Date(dateTime.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }));
     
-    const hours = String(dateTime.getUTCHours()).padStart(2, "0");
-    const minutes = String(dateTime.getUTCMinutes()).padStart(2, "0");
+    const hours = currDate.getHours();
+    const minutes = currDate.getMinutes();
 
     const monthNames = [
         "January",
